@@ -32,7 +32,7 @@ function App() {
       .catch((err) => console.error("Error fetching states:", err));
   }, [country]);
 
-  // Fetch Cities (FIXED)
+  // Fetch Cities (IMPORTANT FIX)
   useEffect(() => {
     if (!country || !state) return;
 
@@ -41,7 +41,7 @@ function App() {
     )
       .then((res) => res.json())
       .then((data) => {
-        setCities(data);   // ✅ only this
+        setCities(data); // ❌ NO setCity("") here
       })
       .catch((err) => console.error("Error fetching cities:", err));
   }, [state]);
@@ -88,11 +88,9 @@ function App() {
         ))}
       </select>
 
-      {/* Output */}
+      {/* FINAL OUTPUT (NO CONDITION, NO COLON) */}
       <h3>
-        {country && state && city
-          ? `You selected ${city}, ${state}, ${country}`
-          : ""}
+        You selected {city}, {state}, {country}
       </h3>
     </div>
   );
