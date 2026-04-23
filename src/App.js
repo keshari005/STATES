@@ -32,7 +32,7 @@ function App() {
       .catch((err) => console.error("Error fetching states:", err));
   }, [country]);
 
-  // Fetch Cities (IMPORTANT FIX)
+  // Fetch Cities (FIXED dependency)
   useEffect(() => {
     if (!country || !state) return;
 
@@ -41,10 +41,11 @@ function App() {
     )
       .then((res) => res.json())
       .then((data) => {
-        setCities(data); // ❌ NO setCity("") here
+        setCities(data);
+        setCity(""); // reset city when state changes
       })
       .catch((err) => console.error("Error fetching cities:", err));
-  }, [state]);
+  }, [country, state]);
 
   return (
     <div style={{ padding: "20px" }}>
@@ -88,12 +89,14 @@ function App() {
         ))}
       </select>
 
-      {/* FINAL OUTPUT (NO CONDITION, NO COLON) */}
-      <h3>
-        You selected {city}, {state}, {country}
-      </h3>
+      {/* ✅ SHOW ONLY WHEN ALL SELECTED */}
+      {city && state && country && (
+        <h3>
+          You selected {city}, {state}, {country}
+        </h3>
+      )}
     </div>
   );
 }
 
-export default App; 
+export default App;
