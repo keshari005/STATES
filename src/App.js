@@ -42,7 +42,7 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setCities(data);
-        setCity(""); // reset city when state changes
+        // setCity(""); // reset city when state changes
       })
       .catch((err) => console.error("Error fetching cities:", err));
   }, [country, state]);
@@ -91,9 +91,11 @@ function App() {
 
       {/* ✅ SHOW ONLY WHEN ALL SELECTED */}
       {city && state && country && (
-        <h3>
-          You selected {city}, {state}, {country}
-        </h3>
+       <h3>
+  {city && state && country
+    ? `You selected ${city}, ${state}, ${country}`
+    : ""}
+</h3>
       )}
     </div>
   );
