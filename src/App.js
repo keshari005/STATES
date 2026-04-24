@@ -88,7 +88,7 @@ function App() {
 
       {/* ✅ IMPORTANT: Always render but condition inside */}
   <h3>
-  You selected {city}, {state}, {country}
+  You selected {city},{state},{country}
 </h3>
     </div>
   );
