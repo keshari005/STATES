@@ -17,7 +17,7 @@ function App() {
       .catch((err) => console.error("Error fetching countries:", err));
   }, []);
 
-  // Fetch States
+  // Fetch States when country changes
   useEffect(() => {
     if (!country) return;
 
@@ -25,14 +25,14 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setStates(data);
-        setState("");
-        setCities([]);
-        setCity("");
+        setState("");     // reset state
+        setCities([]);    // clear cities
+        setCity("");      // reset city
       })
       .catch((err) => console.error("Error fetching states:", err));
   }, [country]);
 
-  // Fetch Cities
+  // Fetch Cities when state changes
   useEffect(() => {
     if (!country || !state) return;
 
@@ -42,6 +42,7 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setCities(data);
+        setCity(""); // reset city when state changes
       })
       .catch((err) => console.error("Error fetching cities:", err));
   }, [country, state]);
@@ -50,48 +51,50 @@ function App() {
     <div style={{ padding: "20px" }}>
       <h2>Select Location</h2>
 
-      {/* Country */}
+      {/* Country Dropdown */}
       <select value={country} onChange={(e) => setCountry(e.target.value)}>
         <option value="">Select Country</option>
-        {countries.map((c, i) => (
-          <option key={i} value={c}>
+        {countries.map((c, index) => (
+          <option key={index} value={c}>
             {c}
           </option>
         ))}
       </select>
 
-      {/* State */}
+      {/* State Dropdown */}
       <select
         value={state}
         onChange={(e) => setState(e.target.value)}
         disabled={!country}
       >
         <option value="">Select State</option>
-        {states.map((s, i) => (
-          <option key={i} value={s}>
+        {states.map((s, index) => (
+          <option key={index} value={s}>
             {s}
           </option>
         ))}
       </select>
 
-      {/* City */}
+      {/* City Dropdown */}
       <select
         value={city}
         onChange={(e) => setCity(e.target.value)}
         disabled={!state}
       >
         <option value="">Select City</option>
-        {cities.map((c, i) => (
-          <option key={i} value={c}>
+        {cities.map((c, index) => (
+          <option key={index} value={c}>
             {c}
           </option>
         ))}
       </select>
 
-      {/* ✅ ALWAYS RENDER */}
-      <h3>
-        You selected {city}, {state}, {country}
-      </h3>
+      {/* ✅ Show only when all selected */}
+      {country && state && city && (
+        <h3>
+          You selected {city}, {state}, {country}
+        </h3>
+      )}
     </div>
   );
 }
