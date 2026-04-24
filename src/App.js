@@ -14,10 +14,10 @@ function App() {
     fetch("https://location-selector.labs.crio.do/countries")
       .then((res) => res.json())
       .then((data) => setCountries(data))
-      .catch((err) => console.error("Error fetching countries:", err));
+      .catch(() => setCountries([]));
   }, []);
 
-  // Fetch States when country changes
+  // Fetch States
   useEffect(() => {
     if (!country) return;
 
@@ -25,14 +25,14 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setStates(data);
-        setState("");     // reset state
-        setCities([]);    // clear cities
-        setCity("");      // reset city
+        setState("");
+        setCities([]);
+        setCity("");
       })
-      .catch((err) => console.error("Error fetching states:", err));
+      .catch(() => setStates([]));
   }, [country]);
 
-  // Fetch Cities when state changes
+  // Fetch Cities
   useEffect(() => {
     if (!country || !state) return;
 
@@ -40,61 +40,58 @@ function App() {
       `https://location-selector.labs.crio.do/country=${country}/state=${state}/cities`
     )
       .then((res) => res.json())
-      .then((data) => {
-        setCities(data);
-        setCity(""); // reset city when state changes
-      })
-      .catch((err) => console.error("Error fetching cities:", err));
+      .then((data) => setCities(data))
+      .catch(() => setCities([]));
   }, [country, state]);
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div>
       <h2>Select Location</h2>
 
-      {/* Country Dropdown */}
+      {/* Country */}
       <select value={country} onChange={(e) => setCountry(e.target.value)}>
         <option value="">Select Country</option>
-        {countries.map((c, index) => (
-          <option key={index} value={c}>
+        {countries.map((c, i) => (
+          <option key={i} value={c}>
             {c}
           </option>
         ))}
       </select>
 
-      {/* State Dropdown */}
+      {/* State */}
       <select
         value={state}
         onChange={(e) => setState(e.target.value)}
         disabled={!country}
       >
         <option value="">Select State</option>
-        {states.map((s, index) => (
-          <option key={index} value={s}>
+        {states.map((s, i) => (
+          <option key={i} value={s}>
             {s}
           </option>
         ))}
       </select>
 
-      {/* City Dropdown */}
+      {/* City */}
       <select
         value={city}
         onChange={(e) => setCity(e.target.value)}
         disabled={!state}
       >
         <option value="">Select City</option>
-        {cities.map((c, index) => (
-          <option key={index} value={c}>
+        {cities.map((c, i) => (
+          <option key={i} value={c}>
             {c}
           </option>
         ))}
       </select>
 
-      {/* ✅ Show only when all selected */}
-      {country && state && city && (
-        <h3>
-          You selected {city}, {state}, {country}
-        </h3>
-      )}
+      {/* ✅ IMPORTANT: Always render but condition inside */}
+      <h3>
+        {city && state && country
+          ? `You selected ${city}, ${state}, ${country}`
+          : ""}
+      </h3>
     </div>
   );
 }
