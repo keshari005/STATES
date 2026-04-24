@@ -87,13 +87,13 @@ function App() {
       </select>
 
       {/* ✅ IMPORTANT: Always render but condition inside */}
-      <h3>
-        {city && state && country
-          ? `You selected ${city}, ${state}, ${country}`
-          : ""}
-      </h3>
+     <h3>
+  {city && state && country
+    ? `You selected ${city}, ${state}, ${country}`
+    : ""}
+</h3>
     </div>
   );
 }
 
-export default App;
+export default App; 
