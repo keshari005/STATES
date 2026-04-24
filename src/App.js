@@ -40,7 +40,10 @@ function App() {
       `https://location-selector.labs.crio.do/country=${country}/state=${state}/cities`
     )
       .then((res) => res.json())
-      .then((data) => setCities(data))
+      .then((data) => {
+        setCities(data);
+        setCity("");
+      })
       .catch(() => setCities([]));
   }, [country, state]);
 
@@ -49,7 +52,7 @@ function App() {
       <h2>Select Location</h2>
 
       {/* Country */}
-      <select value={country} onChange={(e) => setCountry(e.target.value)}>
+      <select onChange={(e) => setCountry(e.target.value.trim())} value={country}>
         <option value="">Select Country</option>
         {countries.map((c, i) => (
           <option key={i} value={c}>
@@ -60,8 +63,8 @@ function App() {
 
       {/* State */}
       <select
+        onChange={(e) => setState(e.target.value.trim())}
         value={state}
-        onChange={(e) => setState(e.target.value)}
         disabled={!country}
       >
         <option value="">Select State</option>
@@ -74,8 +77,8 @@ function App() {
 
       {/* City */}
       <select
+        onChange={(e) => setCity(e.target.value.trim())}
         value={city}
-        onChange={(e) => setCity(e.target.value)}
         disabled={!state}
       >
         <option value="">Select City</option>
@@ -86,12 +89,12 @@ function App() {
         ))}
       </select>
 
-      {/* ✅ IMPORTANT: Always render but condition inside */}
-  <h3>
-  You selected {city},{state},{country}
-</h3>
+      {/* ✅ ALWAYS render + EXACT format */}
+      <h3>
+        {`You selected ${city}, ${state}, ${country}`}
+      </h3>
     </div>
   );
 }
 
-export default App; 
+export default App;
